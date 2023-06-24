@@ -12,10 +12,43 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
+			],
+			detailPage: {
+				type: "none",
+				info: {},
+			},
+			favorites: [
 			]
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
+			setDetailPage: (type, itemInfo) => {
+				//get the store
+				const store = getStore();
+				//we have to loop the entire favorites array to look for the respective index
+				store.detailPage.type = type;
+				store.detailPage.info = itemInfo;
+				setStore(store);
+			},
+			removeItemFromFavorites: (itemIndex) => {
+				//get the store
+				const store = getStore();
+				//we have to loop the entire favorites array to look for the respective index
+				const newFavorites = store.favorites.filter((_, index) => index !== itemIndex);
+				setStore({ demo: store.demo, favorites: newFavorites });
+			},
+
+			addItemFromFavorites: (type, itemInfo) => {
+				//get the store
+				const store = getStore();
+				// adds type to item info
+				itemInfo.type = type;
+				//adds item
+				store.favorites[store.favorites.length] = itemInfo;
+				//we have to loop the entire favorites array to look for the respective index
+				setStore(store);
+			},
+
+			// Use getActions to call a function within a function
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
@@ -36,7 +69,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				});
 
 				//reset the global store
-				setStore({ demo: demo });
+				setStore({ demo: demo, favorites: store.favorites });
 			}
 		}
 	};
