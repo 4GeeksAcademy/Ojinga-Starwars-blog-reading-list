@@ -8,6 +8,7 @@ export const Home = () => {
     const { store, actions } = useContext(Context);
     const [characters, setCharacters] = useState([]);
     const [planets, setPlanets] = useState([]);
+    const [starships, setStarships] = useState([]);
 
     useEffect(() => {
         axios.get('https://swapi.dev/api/people/')
@@ -21,6 +22,14 @@ export const Home = () => {
         axios.get('https://swapi.dev/api/planets/')
             .then(response => {
                 setPlanets(response.data.results);
+            })
+            .catch(error => {
+                console.log('Error getting fake data: ' + error);
+            })
+
+        axios.get('https://swapi.dev/api/starships/')
+            .then(response => {
+                setStarships(response.data.results);
             })
             .catch(error => {
                 console.log('Error getting fake data: ' + error);
@@ -55,6 +64,8 @@ export const Home = () => {
                     </div>
                 </Col>
             </Row>
+
+
             <Row>
                 <Col>
                     <h1 className="text-center mt-5">Planets</h1>
@@ -79,6 +90,35 @@ export const Home = () => {
                     </div>
                 </Col>
             </Row>
+
+
+            <Row>
+                <Col>
+                    <h1 className="text-center mt-5">Starships</h1>
+                    <div className="d-flex flex-row flex-nowrap overflow-auto">
+                        {starships.map((starship, index) => (
+                            <Card style={{ width: '18rem', flex: 'none', margin: '10px' }} key={index}>
+                                <Card.Body>
+                                    <Card.Title>{starship.name}</Card.Title>
+                                    <Card.Text>
+                                        Length: {starship.length} <br />
+                                        Crew Capacity: {starship.crew} <br />
+                                        Hyperdrive Rating: {starship.hyperdrive_rating} <br />
+                                        Starship Class: {starship.starship_class}
+                                    </Card.Text>
+                                    <Link to={{
+                                        pathname: "/detail",
+                                    }}>
+                                        <Button onClick={() => actions.setDetailPage("Starship", starship)} variant="primary">Learn More</Button>
+                                    </Link>
+                                    <Button onClick={() => actions.addItemFromFavorites("Starship", starship)} variant="secondary" className="ml-2">♡</Button>
+                                </Card.Body>
+                            </Card>
+                        ))}
+                    </div>
+                </Col>
+            </Row>
+
         </Container>
     );
 };

@@ -219,6 +219,36 @@ export const Detail = () => {
                 planet[attribute] !== "unknown" &&
                 planet[attribute] !== "n/a"
         );
+    } else if (detailPage.type === "Starship") {
+        // Get the starship information
+        const starship = detailPage.info;
+
+        // Set the page title to the starship's name
+        pageTitle = starship.name;
+
+        // Construct the page content with starship details
+        pageContent = (
+            <div>
+                <p>
+                    {`In a galaxy far, far away, there was a starship called ${starship.name}. `}
+                    {`With a length of ${starship.length}, `}
+                    {`a crew capacity of ${starship.crew}, `}
+                    {`and a hyperdrive rating of ${starship.hyperdrive_rating}, `}
+                    {`it is ${starship.starship_class}. `}
+                    {`For more information, you can visit its resource URL: `}
+                    <a href={starship.url}>{starship.url}</a>.
+                </p>
+            </div>
+        );
+
+        // Filter the mentioned attributes (excluding name, url, unknown, and n/a)
+        mentionedAttributes = Object.keys(starship).filter(
+            (attribute) =>
+                attribute !== "name" &&
+                attribute !== "url" &&
+                starship[attribute] !== "unknown" &&
+                starship[attribute] !== "n/a"
+        );
     } else if (detailPage.type === "none") {
         // Redirect to the home page if type is "none"
         window.location.href = "/";
